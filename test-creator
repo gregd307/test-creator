@@ -1,0 +1,121 @@
+import json
+test = {}
+answer = {}
+questions = {}
+answers=[]
+correct_answer={}
+
+
+
+
+
+
+
+
+# Checks if number of questions is 1 2 3 or 4
+def check_number(number):
+    numbers = ["1","2","3","4"]
+    if number not in numbers:
+        print "please select 1 - 4"
+        return True
+    else:
+        return False
+
+#Checks if the correct answer is an a ,b c or d
+def check_letter(letter):
+    letters = ["a","b","c","d"]
+    if letter not in letters:
+        print "please select a, b, c, or d"
+        return True
+    else:
+        return False
+
+#Checks if the user typed yes or no
+def check_yes(check):
+    check = check.lower()
+    if check == "yes":
+        return True
+    elif check =="y":
+        return True
+    elif check == "no":
+        return False
+    elif check == "n":
+        return False
+    else:
+        print "You did not type a valid answer"
+        return 2
+
+#Gets answers for a quesetion
+def get_answers(answers):
+    question_answers = []
+    answer_count = ["a","b","c","d"]
+    check = True
+    while check == True:
+        number_of_answers = raw_input("How Many answeres are there for your question, 1-4: ")  
+        check = check_number(number_of_answers)
+       
+    number_of_answers = int(number_of_answers)
+    x = 0
+    while number_of_answers > 0:
+        temp = raw_input("Write a answer for your question: ")
+        temp = answer_count[x] + ". " + temp
+        question_answers.append(temp)
+        number_of_answers = (number_of_answers - 1)
+        x = x + 1
+    return question_answers
+
+#Gets the correct answer to the question
+def get_correct_answers(answer):    
+    check = True
+    while check == True:
+        correct_answer = raw_input("What is the correct answer a,b,c, or d: ")
+        correct_answer = correct_answer.lower()
+        check = check_letter(correct_answer)
+    return correct_answer
+
+#Begining of the program
+print "Begin creating your test "
+check = 2
+while check == 2:
+    create = raw_input("Would you like to create a test yes or no: ")
+    check = check_yes(create)
+if check_yes(create) == True and check_yes(create) != 2:
+    question = raw_input("What is your first question: ")
+    questions[1] = question
+    answer[1] = get_answers(answers)
+    correct_answer[1] = get_correct_answers(answers)
+    check = 0
+elif check_yes(create) == False and check_yes(create) != 2:
+    
+    check = 0
+else:
+    check = check_yes(create)
+check = 2
+x = 2
+while check == 2:    
+    create2 = raw_input("would you like to add another question, yes or no?: ")
+    check = check_yes(create2)
+    if check_yes(create2) == True and check_yes(create2) != 2:
+        question = raw_input("What is your next question: ")
+        questions[x] = question
+        answer[x] = get_answers(answers)
+        correct_answer[x] = get_correct_answers(answers)
+        x = x + 1
+        check = 2
+    elif check_yes(create2) == False and check_yes(create2) != 2:
+       
+        check = 0
+    else:
+        check = check_yes(create2)
+
+test_file = raw_input("Please enter name of the test to be saved:")
+
+f = open(test_file + ".txt", "w")
+for x in questions:
+    y = json.dumps([x,questions[x],answer[x],correct_answer[x]])
+    f.write(y + "\n")
+f.close()
+print "your test has been saved as %s.txt" %test_file
+
+
+   
